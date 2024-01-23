@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groww Trade Calculator</title>
+    <style>
+        input[type=number] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: none;
+            background-color: #d9f3ea;
+            color: rgb(2, 2, 2);
+            border-radius: 0.2em;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+        #result {
+            margin-top: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="color: #12e69c;">
+        <img id="logo" src="source/simple logo in green color in which bull and bear stand opposite site..png" alt="Stock Market Logo">
+        Groww Intraday
+    </h1>
+
+    <form id="tradeForm">
+        <label for="capital">Capital:</label>
+        <input type="number" id="capital" name="capital" placeholder="Enter your capital" required>
+
+        <label for="entry">Entry Price:</label>
+        <input type="number" id="entry" name="entry" placeholder="Enter entry price" required>
+
+        <label for="stopLoss">Stop Loss:</label>
+        <input type="number" id="stopLoss" name="stopLoss" placeholder="Enter stop loss" required>
+    </form>
+    <hr>
+
+    <div id="result">
+        <h2>Intraday Information:</h2>
+        <div id="infoBox">
+            <p><strong>Quantity:</strong> <span id="quantity">0.00</span></p>
+            <p><strong>Stop Profit:</strong> <span id="stopProfit">0.00</span></p>
+            <p><strong>Stop Loss:</strong> <span id="stopLossValue">0.00</span></p>
+            <p><strong>Profit:</strong> <span id="profit">0.00</span></p>
+            <p><strong>Loss:</strong> <span id="loss">0.00</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Function to calculate values dynamically
+        function calculate() {
+            var capital = parseFloat(document.getElementById('capital').value);
+            var entry = parseFloat(document.getElementById('entry').value);
+            var stopLoss = parseFloat(document.getElementById('stopLoss').value);
+
+            // Assuming 60 trades and a 1:2 stop loss to profit ratio
+            var totalTrades = 60;
+            var stopProfitRatio = 2;
+
+            var targetProfit = (entry + stopProfitRatio * (entry - stopLoss));
+            var quantity = (capital / totalTrades) / (entry - stopLoss);
+            var calculatedProfit = ((targetProfit - entry) * quantity) - (quantity * 0.17);
+            var calculatedLoss = ((stopLoss - entry) * quantity) - (quantity * 0.13);
+
+            // Update the result dynamically
+            document.getElementById('quantity').innerText = quantity.toFixed(2);
+            document.getElementById('stopProfit').innerText = targetProfit.toFixed(2);
+            document.getElementById('stopLossValue').innerText = stopLoss.toFixed(2);
+            document.getElementById('profit').innerText = calculatedProfit.toFixed(2);
+            document.getElementById('loss').innerText = calculatedLoss.toFixed(2);
+        }
+
+        // Add event listeners to input fields for dynamic updates
+        document.getElementById('capital').addEventListener('input', calculate);
+        document.getElementById('entry').addEventListener('input', calculate);
+        document.getElementById('stopLoss').addEventListener('input', calculate);
+
+        // Initial calculation on page load
+        calculate();
+    </script>
+
+</body>
+</html>
